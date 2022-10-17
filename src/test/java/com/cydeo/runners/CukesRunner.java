@@ -9,12 +9,13 @@ import cucumber.api.cli.Main;
 @CucumberOptions(
         plugin={"html:target/cucumber-report.html",
                 "json:target/cucumber-report.json",
-                "me.jvt.cucumber.report.PrettyReports:target/cucumber-reports"
+                "me.jvt.cucumber.report.PrettyReports:target/cucumber-reports",
+                "rerun:target/rerun.txt"
         },
         features = "src/test/resources/features",
         glue="com/cydeo/stepDefinitions",
         dryRun=false,
-        tags="@wip"
+        tags=""
 )
 
 public class CukesRunner {

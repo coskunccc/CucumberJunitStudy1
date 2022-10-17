@@ -16,7 +16,7 @@ public class Hooks {
             byte[] screenshot=((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot,"image/png",scenario.getName());
         }
-        //Driver.getDriver().close();
+        Driver.closeDriver();
     }
     @AfterStep (value="@student", order=1)
     public void teardownAfterStep(){
