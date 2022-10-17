@@ -13,36 +13,38 @@ public class Driver {
     private Driver() {
     }
 
-    private static WebDriver driver;
+    //private static WebDriver driver;
+    private static InheritableThreadLocal<WebDriver> driverPool=new InheritableThreadLocal<>();
 
     public static WebDriver getDriver() {
-        if (driver == null) {
+        if (driverPool.get() == null) {
             String browser = ConfigurationReader.getProperty("browser");
             switch (browser) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
+                    driverPool.set(new ChromeDriver());
                     break;
                 case "edge":
                     WebDriverManager.edgedriver().setup();
-                    driver = new EdgeDriver();
+                    driverPool.set(new EdgeDriver());
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
+                    driverPool.set(new FirefoxDriver());
                     break;
                 default:
                     throw new IllegalStateException("Unexpected browser :" + browser);
             }
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
-        return driver;
+        driverPool.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driverPool.get().manage().window().maximize();
+        return driverPool.get();
     }
     public static void closeDriver(){
-        if (driver!=null){
-            driver.quit();
-            driver=null;
+        if (driverPool.get()!=null){
+            driverPool.get().quit(); //terminates the existing session
+            driverPool.remove();
+            //driverPool.set(null);
         }
     }
 }
