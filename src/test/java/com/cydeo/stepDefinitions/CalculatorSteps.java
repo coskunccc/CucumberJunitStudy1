@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 
 public class CalculatorSteps {
+    //
     int actualResult;
     @Given("calculator is open")
     public void calculator_is_open() {
